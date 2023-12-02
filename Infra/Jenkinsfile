@@ -1,0 +1,10 @@
+node{
+    stage("Build"){
+        configFileProvider([configFile(fileId: 'env.stg.properties', variable: 'bll_kohav_env')]) {
+            echo "=============== Read from env file ============"
+            bat "set" 
+            bat " type ${env.bll_kohav_env}"
+            echo "=============== End env file ============"
+        }
+    }
+}

@@ -30,20 +30,18 @@ pipeline {
 
     stage('Set Config Properties') {
 	  steps {
-		step{
 		   script{
 			checkout scm
 			//props = readProperties(defaults: d, file: "kohav/stg/env.stg.properties")
 			props = readProperties(file: "${projName}\\${envName}\\env.stg.properties")
 		   }
 		}
-		step{
+	  steps{
 			echo "k1=${props[projName+'_key1_'+envName]}"
 			echo "k2=${props['key2']}"
 			echo "k3=${props['key3']}"
 		}
-	  }
-    }
+	}
 	
     stage('validate') {
       steps {

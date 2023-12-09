@@ -16,22 +16,22 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages{
-    stage("Set Config Provider"){
-	  steps {
-        configFileProvider([configFile(fileId: 'env.stg.properties', variable: 'bll_kohav_env')]) {
-            echo "=============== Read from env file ============"
-            bat "set" 
-            bat "type ${env.bll_kohav_env}"
-            echo "=============== End env file ============"
-        }
-	  }
-    }
+//    stage("Set Config Provider"){
+//	  steps {
+//       configFileProvider([configFile(fileId: 'env.stg.properties', variable: 'bll_kohav_env')]) {
+//            echo "=============== Read from env file ============"
+//            bat "set" 
+//            bat "type ${env.bll_kohav_env}"
+//            echo "=============== End env file ============"
+//        }
+//	  }
+//    }
 
     stage('Set Config Properties') {
 	  steps {
 	   script{
 		checkout scm
-		props = readProperties(defaults: d, file: 'Kohav/stg/env.stg.properties')
+		props = readProperties(defaults: d, file: 'Kohav\stg\env.stg.properties')
        }
 	  }
     }

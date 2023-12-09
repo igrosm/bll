@@ -6,7 +6,8 @@ def props
 pipeline {
   agent  any 
   parameters{
-    string(name: 'projName', defaultValue: '', description: 'Project Name')
+//    string(name: 'projName', defaultValue: '', description: 'Project Name')
+    choice(name: 'projName', choices: ['kohav', 'stg', 'prd'], description: 'Project Name')
     choice(name: 'envName', choices: ['', 'stg', 'prd'], description: 'Env Name')
     booleanParam(defaultValue: false,  description: 'send mail', name: 'isSendMail')
   }
@@ -31,7 +32,7 @@ pipeline {
 	  steps {
 	   script{
 		checkout scm
-		props = readProperties(defaults: d, file: 'Kohav\stg\env.stg.properties')
+		props = readProperties(defaults: d, file: '${projName}/${envName}/env.stg.properties')
        }
 	  }
     }

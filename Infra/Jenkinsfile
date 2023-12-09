@@ -32,7 +32,8 @@ pipeline {
 	  steps {
 	   script{
 		checkout scm
-		props = readProperties(defaults: d, file: "kohav/stg/env.stg.properties")
+		//props = readProperties(defaults: d, file: "kohav/stg/env.stg.properties")
+		props = readProperties(file: "${projName}\\${envName}\\env.stg.properties")
        }
 	  }
     }

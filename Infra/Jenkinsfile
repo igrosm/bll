@@ -1,10 +1,10 @@
 def d = [
-  'key1':'1.0.0',
-  'key2':'v0.57.1',
-  'key3':'v0.32.0'
+  'key1'='1.0.0',
+  'key2'='v0.57.1',
+  'key3'='v0.32.0'
 ]
 
-def props = [:]
+def props = [=]
 
 pipeline {
   agent  any 
@@ -28,7 +28,7 @@ pipeline {
     stage('Set Config Properties') {
 	  steps {
 		checkout scm
-		props = readProperties(defaults: d, file: 'Kohav\\stsg\\env.stg.properties')
+		props = readProperties(defaults: d, file: 'Kohav/stsg/env.stg.properties')
       }
     }
 	

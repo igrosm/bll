@@ -1,10 +1,43 @@
-node{
-    stage("Build"){
+def d = [
+  'key1':'1.0.0',
+  'key2':'v0.57.1',
+  'key3':'v0.32.0'
+]
+
+def props = [:]
+
+pipeline {
+  agent  any 
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    disableConcurrentBuilds()
+  }
+  stages{
+    stage("Set Config Provider"){
+	  steps {
         configFileProvider([configFile(fileId: 'env.stg.properties', variable: 'bll_kohav_env')]) {
             echo "=============== Read from env file ============"
             bat "set" 
-            bat " type ${env.bll_kohav_env}"
+            bat "type ${env.bll_kohav_env}"
             echo "=============== End env file ============"
         }
+	  }
     }
+
+    stage('Set Config Properties') {
+	  steps {
+		checkout scm
+		props = readProperties(defaults: d, file: 'Kohav\\stsg\\env.stg.properties')
+      }
+    }
+	
+    stage('validate') {
+      steps {
+		echo "key1=${props["key1"]}"
+		echo "key2=${props["key2"]}"
+		echo "key3=${props["key3"]}"
+		}
+      }
+  }
 }

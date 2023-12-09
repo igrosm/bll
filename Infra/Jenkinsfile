@@ -1,23 +1,15 @@
-def d = [
-  'key1'='1.0.0',
-  'key2'='v0.57.1',
-  'key3'='v0.32.0'
-]
+def d = [ 'key1'=='1.0.0','key2'=='v0.57.1','key3'=='v0.32.0' ]
 
 //def props = [:]
 def props 
 
 pipeline {
   agent  any 
-  parameters(
+  parameters{
     string(name: 'projName', defaultValue: '', description: 'Project Name')
-    choice(name: 'envName',choices: ['', 'stg', 'prd'],description: 'Env Name' )
+    choice(name: 'envName', choices: ['', 'stg', 'prd'], description: 'Env Name')
     booleanParam(defaultValue: false,  description: 'send mail', name: 'isSendMail')
-  )
-parameters {
-    string(name: 'suiteFile', defaultValue: '', description: 'Suite File')
-}
-
+  }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
     durabilityHint('PERFORMANCE_OPTIMIZED')
@@ -37,16 +29,18 @@ parameters {
 
     stage('Set Config Properties') {
 	  steps {
+	   script{
 		checkout scm
 		props = readProperties(defaults: d, file: 'Kohav/stg/env.stg.properties')
-      }
+       }
+	  }
     }
 	
     stage('validate') {
       steps {
-		echo "key1=${props[projName+'key1'+envName]}"
-		echo "key2=${props['key2']}"
-		echo "key3=${props['key3']}"
+		echo "k1=${props[projName+'_key1_'+envName]}"
+		echo "k2=${props['key2']}"
+		echo "k3=${props['key3']}"
 		}
       }
   }

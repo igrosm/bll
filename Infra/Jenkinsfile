@@ -9,6 +9,15 @@ def props
 
 pipeline {
   agent  any 
+  parameters(
+    string(name: 'projName', defaultValue: '', description: 'Project Name')
+    choice(name: 'envName',choices: ['', 'stg', 'prd'],description: 'Env Name' )
+    booleanParam(defaultValue: false,  description: 'send mail', name: 'isSendMail')
+  )
+parameters {
+    string(name: 'suiteFile', defaultValue: '', description: 'Suite File')
+}
+
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
     durabilityHint('PERFORMANCE_OPTIMIZED')
@@ -29,15 +38,15 @@ pipeline {
     stage('Set Config Properties') {
 	  steps {
 		checkout scm
-		props = readProperties(defaults: d, file: 'Kohav/stsg/env.stg.properties')
+		props = readProperties(defaults: d, file: 'Kohav/stg/env.stg.properties')
       }
     }
 	
     stage('validate') {
       steps {
-		echo "key1=${props["key1"]}"
-		echo "key2=${props["key2"]}"
-		echo "key3=${props["key3"]}"
+		echo "key1=${props[projName+'key1'+envName]}"
+		echo "key2=${props['key2']}"
+		echo "key3=${props['key3']}"
 		}
       }
   }

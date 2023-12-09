@@ -36,16 +36,14 @@ pipeline {
 			props = readProperties(file: "${projName}\\${envName}\\env.stg.properties")
 		   }
 		}
-	  steps{
-			echo "k1=${props[projName+'_key1_'+envName]}"
-			echo "k2=${props['key2']}"
-			echo "k3=${props['key3']}"
-		}
 	}
 	
     stage('validate') {
       steps {
 		   script{
+				echo "k1=${props[projName+'_key1_'+envName]}"
+				echo "k2=${props['key2']}"
+				echo "k3=${props['key3']}"
 				writeFile file: 'props.txt', text: '${props['key1']},${props['key2']},${props['key3']}'
 			}
 		}
